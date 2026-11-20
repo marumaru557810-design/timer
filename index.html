@@ -1,0 +1,175 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f8f9fa">
+    <meta name="description" content="集中時間と休憩時間を管理できる勉強タイマー。雨や森などの環境音を楽しみながら勉強できます。">
+
+    <title>勉強タイマー</title>
+
+    <link rel="stylesheet" href="./index.css">
+</head>
+
+<body>
+
+    <button
+        id="theme-toggle-btn"
+        class="theme-toggle"
+        aria-label="テーマを切り替える"
+        type="button"
+    >🌙</button>
+
+    <main class="container">
+
+        <h1>勉強タイマー</h1>
+
+        <div id="status">集中時間（25分）</div>
+
+        <div id="timer" aria-live="off">25:00</div>
+
+        <div
+            class="progress-container"
+            role="progressbar"
+            aria-label="残り時間"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow="100"
+            id="progress-container"
+        >
+            <div id="progress-bar"></div>
+        </div>
+
+        <div class="settings-group">
+
+            <div class="setting-item">
+                <label for="work-input">集中（分）</label>
+                <input
+                    type="number"
+                    id="work-input"
+                    value="25"
+                    min="1"
+                    max="180"
+                >
+            </div>
+
+            <div class="setting-item">
+                <label for="break-input">休憩（分）</label>
+                <input
+                    type="number"
+                    id="break-input"
+                    value="5"
+                    min="1"
+                    max="60"
+                >
+            </div>
+
+        </div>
+
+        <div class="btn-group">
+
+            <button id="start-btn" type="button">
+                スタート
+            </button>
+
+            <button id="stop-btn" type="button" disabled>
+                ストップ
+            </button>
+
+            <button id="reset-btn" type="button">
+                リセット
+            </button>
+
+        </div>
+
+        <button id="sound-test-btn" type="button">
+            🔊 終了音をテスト
+        </button>
+
+        <!-- 環境音プレイヤー -->
+
+        <section class="ambience-player">
+
+            <h2>🎧 環境音プレイヤー</h2>
+
+            <p class="ambience-description">
+                好きな音を聴きながら集中しよう
+            </p>
+
+            <label for="ambience-select">
+                環境音を選択
+            </label>
+
+            <select id="ambience-select">
+
+                <option value="rain">🌧️ 雨の音</option>
+                <option value="forest">🌳 森・鳥のさえずり</option>
+                <option value="ocean">🌊 波の音</option>
+                <option value="cafe">☕ カフェの雑音</option>
+                <option value="river">🏞️ 川のせせらぎ</option>
+                <option value="white-noise">📻 ホワイトノイズ</option>
+                <option value="fire">🔥 焚き火の音</option>
+                <option value="wind">🍃 風の音</option>
+
+            </select>
+
+            <div class="ambience-buttons">
+
+                <button id="ambience-play-btn" type="button">
+                    ▶ 再生
+                </button>
+
+                <button id="ambience-stop-btn" type="button">
+                    ■ 停止
+                </button>
+
+            </div>
+
+            <div class="volume-control">
+
+                <label for="ambience-volume">
+                    🔊 音量
+                </label>
+
+                <input
+                    type="range"
+                    id="ambience-volume"
+                    min="0"
+                    max="100"
+                    value="35"
+                >
+
+                <span id="volume-value">35%</span>
+
+            </div>
+
+            <p
+                id="ambience-status"
+                role="status"
+                aria-live="polite"
+            >
+                停止中
+            </p>
+
+            <audio
+                id="ambience-audio"
+                loop
+                preload="none"
+            ></audio>
+
+        </section>
+
+        <p class="footer-text">
+            自分のペースで、一歩ずつ。
+        </p>
+
+    </main>
+
+    <script src="./index.js"></script>
+
+</body>
+</html>
+
+
+		

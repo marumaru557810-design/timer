@@ -1,0 +1,531 @@
+
+
+
+/* ========================================
+   カラーテーマ
+======================================== */
+
+/* ========================================
+   ページ全体の設定
+======================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    min-height: 100%;
+}
+
+body {
+    min-height: 100vh;
+    margin: 0;
+    padding: 70px 20px 30px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: var(--bg-color);
+    color: var(--text-main);
+
+    transition:
+        background-color 0.3s,
+        color 0.3s;
+}
+
+/* ライトモード */
+:root {
+    --work-color: #ff6685;
+    --break-color: #42c8ff;
+
+    --bg-color: #edf1fa;
+    --container-bg: #ffffff;
+    --card-bg: #f3f5fb;
+
+    --text-main: #263047;
+    --text-sub: #66718a;
+    --text-title: #202a40;
+
+    --progress-bg: #dce3f0;
+    --input-bg: #ffffff;
+    --input-border: #d3dbea;
+
+    --shadow-color: rgba(35, 50, 80, 0.12);
+    --accent: #8065ff;
+    --accent-light: #42aaff;
+}
+
+/* ダークモード */
+[data-theme="dark"] {
+    --bg-color: #101426;
+    --container-bg: #1b2239;
+    --card-bg: #252e49;
+
+    --text-main: #f4f6ff;
+    --text-sub: #aab4d0;
+    --text-title: #ffffff;
+
+    --progress-bg: #343d59;
+    --input-bg: #202943;
+    --input-border: #465273;
+
+    --shadow-color: rgba(0, 0, 0, 0.35);
+    --accent: #8065ff;
+    --accent-light: #42c8ff;
+}
+
+
+/* ========================================
+   テーマ切り替え
+======================================== */
+
+.theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+
+    padding: 10px 16px;
+
+    background: var(--card-bg);
+    color: white;
+
+    border: 1px solid var(--input-border);
+    border-radius: 30px;
+
+    box-shadow: 0 5px 15px var(--shadow-color);
+
+    cursor: pointer;
+}
+
+/* ========================================
+   タイマー本体
+======================================== */
+
+.container {
+    width: 100%;
+    max-width: 480px;
+
+    margin: auto;
+    padding: 35px 25px;
+
+    text-align: center;
+
+    background: var(--container-bg);
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 28px;
+
+    box-shadow:
+        0 25px 60px var(--shadow-color),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+    transition:
+        background-color 0.3s,
+        box-shadow 0.3s;
+}
+
+h1 {
+    margin: 0 0 15px;
+
+    font-size: 27px;
+    letter-spacing: 2px;
+
+    color: var(--text-title);
+}
+
+#status {
+    margin-bottom: 15px;
+
+    font-size: 16px;
+    font-weight: bold;
+
+    color: var(--work-color);
+}
+
+#timer {
+    margin: 10px 0 20px;
+
+    font-size: clamp(58px, 15vw, 78px);
+    font-weight: 800;
+
+    letter-spacing: 2px;
+    font-variant-numeric: tabular-nums;
+
+    color: var(--text-title);
+
+    text-shadow:
+        0 0 25px rgba(66, 200, 255, 0.2);
+}
+
+/* ========================================
+   プログレスバー
+======================================== */
+
+.progress-container {
+    width: 100%;
+    height: 10px;
+
+    margin-bottom: 30px;
+
+    background: var(--progress-bg);
+
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+#progress-bar {
+    width: 100%;
+    height: 100%;
+
+    background: linear-gradient(
+        90deg,
+        #8065ff,
+        #42c8ff
+    );
+
+    border-radius: 20px;
+
+    transition:
+        width 1s linear,
+        background-color 0.5s;
+}
+
+/* ========================================
+   時間設定
+======================================== */
+
+.settings-group {
+    display: flex;
+    justify-content: space-between;
+
+    gap: 12px;
+
+    margin-bottom: 25px;
+    padding: 18px;
+
+    background: var(--card-bg);
+
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 18px;
+}
+
+.setting-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    flex: 1;
+}
+
+.setting-item label {
+    margin-bottom: 9px;
+
+    font-size: 13px;
+    font-weight: bold;
+
+    color: var(--text-sub);
+}
+
+.setting-item input {
+    width: 85%;
+    min-width: 0;
+    padding: 10px;
+
+    font-size: 16px;
+    text-align: center;
+
+    background: var(--input-bg);
+    color: var(--text-main);
+
+    border: 1px solid var(--input-border);
+    border-radius: 10px;
+
+    outline: none;
+    transition: 0.2s;
+}
+
+.setting-item input:focus {
+    border-color: var(--accent-light);
+    box-shadow: 0 0 10px rgba(66, 200, 255, 0.2);
+}
+
+/* ========================================
+   ボタン共通
+======================================== */
+
+button {
+    padding: 13px;
+
+    font-size: 14px;
+    font-weight: bold;
+
+    border: none;
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s,
+        box-shadow 0.2s,
+        opacity 0.2s;
+}
+
+button:not(:disabled):hover {
+    transform: translateY(-2px);
+}
+
+button:not(:disabled):active {
+    transform: scale(0.96);
+}
+
+button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+button:focus-visible,
+select:focus-visible,
+input:focus-visible {
+    outline: 2px solid var(--accent-light);
+    outline-offset: 3px;
+}
+
+/* ========================================
+   タイマーボタン
+======================================== */
+
+.btn-group {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-group button {
+    flex: 1;
+    padding: 14px 8px;
+}
+
+#start-btn {
+    background: linear-gradient(
+        135deg,
+        #24b47e,
+        #15966b
+    );
+    color: white;
+
+    box-shadow: 0 5px 15px rgba(36, 180, 126, 0.2);
+}
+
+#stop-btn {
+    background: linear-gradient(
+        135deg,
+        #ffbd59,
+        #f39b38
+    );
+    color: #252033;
+}
+
+#reset-btn {
+    background: linear-gradient(
+        135deg,
+        #68738d,
+        #48536f
+    );
+    color: white;
+}
+
+#sound-test-btn {
+    width: 100%;
+    margin-top: 15px;
+    padding: 14px;
+
+    background: linear-gradient(
+        135deg,
+        #8065ff,
+        #a15cff
+    );
+
+    color: white;
+
+    box-shadow: 0 5px 18px rgba(128, 101, 255, 0.25);
+}
+
+/* ========================================
+   環境音プレイヤー
+======================================== */
+
+.ambience-player {
+    margin-top: 25px;
+    padding: 22px 18px;
+
+    background: var(--card-bg);
+
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 20px;
+}
+
+.ambience-player h2 {
+    margin: 0 0 10px;
+
+    font-size: 20px;
+
+    color: var(--text-title);
+}
+
+.ambience-description {
+    margin-bottom: 20px;
+
+    font-size: 13px;
+
+    color: var(--text-sub);
+}
+
+.ambience-player > label {
+    display: block;
+
+    margin-bottom: 9px;
+
+    font-size: 13px;
+    font-weight: bold;
+
+    color: var(--text-sub);
+}
+
+#ambience-select {
+    width: 100%;
+    padding: 12px;
+
+    font-size: 14px;
+
+    background: var(--input-bg);
+    color: var(--text-main);
+
+    border: 1px solid var(--input-border);
+    border-radius: 10px;
+
+    cursor: pointer;
+}
+
+#ambience-select option {
+    background: var(--container-bg);
+    color: var(--text-main);
+}
+
+.ambience-buttons {
+    display: flex;
+    gap: 10px;
+
+    margin-top: 15px;
+}
+
+.ambience-buttons button {
+    flex: 1;
+    padding: 13px;
+}
+
+#ambience-play-btn {
+    background: linear-gradient(
+        135deg,
+        #8065ff,
+        #a15cff
+    );
+    color: white;
+}
+
+#ambience-stop-btn {
+    background: linear-gradient(
+        135deg,
+        #68738d,
+        #48536f
+    );
+    color: white;
+}
+
+/* ========================================
+   音量調整
+======================================== */
+
+.volume-control {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    margin-top: 20px;
+
+    font-size: 13px;
+    color: var(--text-sub);
+}
+
+#ambience-volume {
+    flex: 1;
+    min-width: 0;
+
+    accent-color: #947aff;
+    cursor: pointer;
+}
+
+#volume-value {
+    min-width: 40px;
+
+    text-align: right;
+    font-weight: bold;
+
+    color: var(--accent-light);
+}
+
+#ambience-status {
+    margin: 15px 0 0;
+
+    font-size: 12px;
+    color: var(--text-sub);
+}
+
+/* ========================================
+   フッター
+======================================== */
+
+.footer-text {
+    margin: 23px 0 0;
+
+    font-size: 12px;
+    letter-spacing: 1px;
+
+    color: var(--text-sub);
+}
+
+/* ========================================
+   スマートフォン
+======================================== */
+
+@media (max-width: 400px) {
+
+    body {
+        padding: 70px 12px 25px;
+    }
+
+    .container {
+        padding: 27px 17px;
+        border-radius: 22px;
+    }
+
+    h1 {
+        font-size: 23px;
+    }
+
+    .btn-group {
+        gap: 6px;
+    }
+
+    .btn-group button {
+        padding: 12px 5px;
+        font-size: 13px;
+    }
+
+    .ambience-player {
+        padding: 18px 13px;
+    }
+
+}
+
+
