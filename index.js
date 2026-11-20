@@ -20,8 +20,6 @@ const soundTestBtn = $("sound-test-btn");
 
 const ambienceAudio = $("ambience-audio");
 const ambienceSelect = $("ambience-select");
-const ambiencePlayBtn = $("ambience-play-btn");
-const ambienceStopBtn = $("ambience-stop-btn");
 const ambienceVolume = $("ambience-volume");
 const volumeValue = $("volume-value");
 const ambienceStatus = $("ambience-status");
@@ -144,11 +142,9 @@ function createWhiteNoise() {
 async function startAmbience() {
 
     if (!timerId) {
-    ambienceStatus.textContent = "タイマー作動中のみ再生できます";
-    return;
-}
+        return;
+    }
 
-    
     const selected = ambienceSelect.value;
 
     stopAmbience(false);
@@ -171,23 +167,17 @@ async function startAmbience() {
                 throw new Error("音声ファイルが見つかりません");
             }
 
-            // 音声ファイルを設定
             ambienceAudio.src = file;
-
             ambienceAudio.loop = true;
-
             ambienceAudio.volume = ambienceVolumeValue;
 
             await ambienceAudio.play();
-
         }
 
         ambiencePlaying = true;
 
         ambienceStatus.textContent =
             "▶ 再生中：" + ambienceNames[selected];
-
-        ambiencePlayBtn.textContent = "▶ 再生中";
 
     } catch (error) {
 
@@ -197,11 +187,7 @@ async function startAmbience() {
 
         ambienceStatus.textContent =
             "再生できません。音声ファイルを確認してください。";
-
-        ambiencePlayBtn.textContent = "▶ 再生";
-
     }
-
 }
 
 
@@ -212,7 +198,6 @@ async function startAmbience() {
 function stopAmbience(showStatus = true) {
 
     ambienceAudio.pause();
-
     ambienceAudio.currentTime = 0;
 
     if (noiseSource) {
@@ -225,37 +210,17 @@ function stopAmbience(showStatus = true) {
 
         noiseSource.disconnect();
         noiseSource = null;
-
     }
 
     if (noiseGain) {
-
         noiseGain.disconnect();
         noiseGain = null;
-
     }
 
     ambiencePlaying = false;
 
-    ambiencePlayBtn.textContent = "▶ 再生";
-
     if (showStatus) {
         ambienceStatus.textContent = "停止中";
-    }
-
-}
-
-function updateAmbienceControls() {
-    const canPlay = timerId !== null;
-
-    ambiencePlayBtn.disabled = !canPlay;
-    ambienceStopBtn.disabled = !canPlay || !ambiencePlaying;
-
-    if (!canPlay) {
-        stopAmbience(false);
-        ambienceStatus.textContent = "タイマー作動中のみ再生できます";
-    } else if (!ambiencePlaying) {
-        ambienceStatus.textContent = "停止中（再生できます）";
     }
 }
 
@@ -290,23 +255,13 @@ ambienceVolume.addEventListener("input", function () {
 
 ambienceSelect.addEventListener("change", function () {
 
-    const wasPlaying = ambiencePlaying;
-
-    stopAmbience();
+    // 選択を変更したら音を停止する
+    stopAmbience(false);
 
     ambienceStatus.textContent =
         "選択中：" + ambienceNames[this.value];
 
-    if (wasPlaying) {
-        startAmbience();
-    }
-
 });
-
-
-ambiencePlayBtn.addEventListener("click", startAmbience);
-
-ambienceStopBtn.addEventListener("click", () => stopAmbience(true));
 
 /* ========================================
    AudioContextの後片付け
@@ -552,7 +507,6 @@ function countdown() {
     timerId = null;
     
     stopAmbience(false);
-	updateAmbienceControls();
 
     startBtn.disabled = false;
     stopBtn.disabled = true;
@@ -595,10 +549,13 @@ function startTimer() {
     startBtn.disabled = true;
     stopBtn.disabled = false;
 
-    // 環境音を再生せず、タイマーだけを開始
+    // タイマーを開始
     timerId = setInterval(countdown, 1000);
 
-    updateAmbienceControls();
+    // 環境音も自動再生
+    startAmbience();
+
+    
 }
 
 
@@ -613,7 +570,6 @@ function stopTimer() {
         clearInterval(timerId);
 
         timerId = null;
-
     }
 
     if (endTimeoutId !== null) {
@@ -621,7 +577,6 @@ function stopTimer() {
         clearTimeout(endTimeoutId);
 
         endTimeoutId = null;
-
     }
 
     startBtn.disabled = false;
@@ -630,8 +585,10 @@ function stopTimer() {
     workInput.disabled = false;
     breakInput.disabled = false;
 
-	stopAmbience(false);
-	updateAmbienceControls();
+    // 環境音も自動停止
+    stopAmbience(false);
+
+    
 }
 
 
@@ -732,6 +689,6 @@ applyCustomTime();
 
 ambienceStatus.textContent = "タイマー作動中のみ再生できます";
 
-updateAmbienceControls();
+
 
 console.log("勉強タイマーを起動しました");

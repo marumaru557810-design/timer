@@ -528,4 +528,18 @@ input:focus-visible {
 
 }
 
+/* ========================================
+   ŠÂ‹«‰¹‚Ì’ß
+======================================== */
+
+.ambience-note {
+    margin: 10px 0 0;
+
+    font-size: 11px;
+    line-height: 1.7;
+
+    color: var(--text-sub);
+
+    text-align: left;
+}
 
